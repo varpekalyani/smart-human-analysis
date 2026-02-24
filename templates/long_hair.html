@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Long Hair Identification</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E72 50%, #FFA502 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container { position: relative; z-index: 1; }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 400;
+        }
+
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+
+        .card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #FF6B6B;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #2d3436;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        .form-control {
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            padding: 12px 16px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #FF6B6B;
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #FF6B6B, #FF8E72);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 15px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+        }
+
+        .result-section {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .result-section h6 {
+            font-weight: 700;
+            color: #FF6B6B;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            color: #2d3436;
+            font-weight: 500;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .result-item:last-child { border-bottom: none; }
+
+        .result-value {
+            color: #FF6B6B;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 8px;
+            margin-top: 8px;
+        }
+
+        .status-ok {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            color: #155724;
+        }
+
+        .status-missing {
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+            color: #721c24;
+        }
+
+        .camera-feed {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .camera-feed img {
+            width: 100%;
+            height: auto;
+        }
+
+        .back-button {
+            display: inline-block;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #FF6B6B, #FF8E72);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2rem; }
+            .content-wrapper { grid-template-columns: 1fr; }
+            .card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💇 Long Hair Identification</h1>
+            <p class="header-subtitle">Detect age, gender and hair characteristics</p>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="card">
+                <h3><i class="fas fa-upload"></i> Image Upload</h3>
+                <form method="POST" enctype="multipart/form-data">
+                    <label class="form-label">Select Image:</label>
+                    <input type="file" name="image" class="form-control" accept="image/*" required>
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-magic"></i> Predict
+                    </button>
+                </form>
+
+                {% if result %}
+                    <div style="margin-top: 20px; padding: 15px; background: linear-gradient(135deg, rgba(255, 107, 107, 0.05), rgba(255, 142, 114, 0.05)); border-radius: 12px; border-left: 4px solid #FF6B6B;">
+                        <strong style="color: #FF6B6B;">Result:</strong>
+                        <p style="color: #2d3436; margin-top: 10px; margin-bottom: 0;">{{ result }}</p>
+                    </div>
+                {% endif %}
+
+                {% if age or gender or hair %}
+                    <div class="result-section">
+                        <h6><i class="fas fa-chart-bar"></i> Details</h6>
+                        {% if age %}
+                            <div class="result-item">
+                                <span>Age:</span>
+                                <span class="result-value">~{{ age }}</span>
+                            </div>
+                        {% endif %}
+                        {% if gender %}
+                            <div class="result-item">
+                                <span>Gender:</span>
+                                <span class="result-value">{{ gender }}</span>
+                            </div>
+                        {% endif %}
+                        {% if hair %}
+                            <div class="result-item">
+                                <span>Hair Type:</span>
+                                <span class="result-value">{{ hair|capitalize }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+                <div class="result-section">
+                    <h6><i class="fas fa-cogs"></i> Model Status</h6>
+                    <div>
+                        <span class="status-badge {% if model_status.face_model == 'OK' %}status-ok{% else %}status-missing{% endif %}">
+                            <i class="fas fa-face"></i> Face: {{ model_status.face_model }}
+                        </span>
+                        <span class="status-badge {% if model_status.age_model == 'OK' %}status-ok{% else %}status-missing{% endif %}">
+                            <i class="fas fa-birthday-cake"></i> Age: {{ model_status.age_model }}
+                        </span>
+                        <span class="status-badge {% if model_status.gender_model == 'OK' %}status-ok{% else %}status-missing{% endif %}">
+                            <i class="fas fa-venus-mars"></i> Gender: {{ model_status.gender_model }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-video"></i> Live Camera Feed</h3>
+                <div class="camera-feed">
+                    <img src="{{ url_for('video_feed_long_hair') }}" alt="Live camera feed" />
+                </div>
+                <a href="/" class="back-button">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

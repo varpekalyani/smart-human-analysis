@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senior Citizen Identification</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: linear-gradient(135deg, #00B894 0%, #00D2D3 50%, #0984e3 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container { position: relative; z-index: 1; }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 400;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 0.6s ease-out;
+            margin-bottom: 30px;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00B894;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .camera-feed {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-height: 500px;
+        }
+
+        .camera-feed img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn-custom {
+            padding: 13px 28px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-home {
+            background: linear-gradient(135deg, #00B894, #00D2D3);
+            color: white;
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #0984e3, #74b9ff);
+            color: white;
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            color: white;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2rem; }
+            .card { padding: 20px; }
+            .button-group { flex-direction: column; }
+            .btn-custom { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>👴 Senior Citizen Identification</h1>
+            <p class="header-subtitle">Real-time detection and logging of seniors in live camera feed</p>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-video"></i> Live Camera Feed</h3>
+            <div class="camera-feed">
+                <img src="{{ url_for('video_feed_senior') }}" alt="Live camera feed" />
+            </div>
+            <p style="color: #666; margin-top: 20px; font-size: 0.95rem;">
+                <i class="fas fa-info-circle"></i> Detected seniors are automatically logged to CSV and displayed above
+            </p>
+        </div>
+
+        <div class="button-group">
+            <a href="/" class="btn-custom btn-home">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+            <a href="/logs/senior_log.csv" class="btn-custom btn-download">
+                <i class="fas fa-download"></i> Download Senior Log (CSV)
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

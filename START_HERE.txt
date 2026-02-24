@@ -1,0 +1,23 @@
+========================================
+  HOW TO RUN THE APP (avoid NumPy error)
+========================================
+
+DO NOT run:  python app.py
+(That uses wrong Python and causes "NumPy 2.4.2" / "_ARRAY_API not found" error.)
+
+DO ONE OF THESE:
+
+1) In PowerShell, from this folder:
+   .\run.ps1
+
+2) Or in CMD, from this folder:
+   run.bat
+
+3) Or activate venv first, then run:
+   .\venv\Scripts\activate
+   python app.py
+
+Then open: http://127.0.0.1:5000/sign-language
+The yellow banner will be gone and hand detection will work.
+
+========================================

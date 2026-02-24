@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Colour Detection</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E72 50%, #FFA502 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 400;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 28px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            transition: all 0.3s ease;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.6);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+
+        .card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #FF6B6B;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h3 i {
+            font-size: 1.8rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #2d3436;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        .form-control {
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            padding: 12px 16px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #FF6B6B;
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #FF6B6B, #FF8E72);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 15px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-submit:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .summary-section {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .summary-section h6 {
+            font-weight: 700;
+            color: #FF6B6B;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            color: #2d3436;
+            font-weight: 500;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-value {
+            color: #FF6B6B;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .image-container {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 400px;
+        }
+
+        .image-container img {
+            border-radius: 16px;
+            max-width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.6s ease-out 0.4s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .image-placeholder {
+            color: #999;
+            font-size: 1rem;
+            font-style: italic;
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: #2d3436;
+            font-size: 0.9rem;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+        }
+
+        .alert {
+            border-radius: 12px;
+            border: none;
+            margin-bottom: 20px;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .legend {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚗 Car Colour Detection</h1>
+            <p class="header-subtitle">Upload an image to detect cars, trucks, buses, and people</p>
+        </div>
+
+        {% if not yolo_available %}
+            <div class="alert alert-warning">
+                <strong>⚠️ Warning:</strong> YOLO model not available. Add yolov8n.pt to models/ directory.
+            </div>
+        {% endif %}
+
+        <div class="content-wrapper">
+            <div class="card">
+                <h3><i class="fas fa-upload"></i> Image Upload</h3>
+                <form method="POST" enctype="multipart/form-data">
+                    <label class="form-label">Select Image:</label>
+                    <input type="file" name="image" class="form-control" accept="image/*" required>
+                    <button type="submit" class="btn-submit" {% if not yolo_available %}disabled{% endif %}>
+                        <i class="fas fa-magic"></i> Run Detection
+                    </button>
+                </form>
+
+                <div class="summary-section">
+                    <h6><i class="fas fa-chart-bar"></i> Detection Summary</h6>
+                    <div class="summary-item">
+                        <span>Total Cars:</span>
+                        <span class="summary-value">{{ total_cars }}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Blue Cars:</span>
+                        <span class="summary-value">{{ blue_cars }}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Total People:</span>
+                        <span class="summary-value">{{ total_people }}</span>
+                    </div>
+                </div>
+
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background:#0000FF;"></div>
+                        <span>Blue car</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background:#FF0000;"></div>
+                        <span>Other car</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background:#00FF00;"></div>
+                        <span>Person</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-image"></i> Processed Image</h3>
+                <div class="image-container">
+                    {% if image_url %}
+                        <img src="{{ image_url }}" alt="Processed result">
+                    {% else %}
+                        <p class="image-placeholder">Upload an image to see detection results</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <center>
+            <a href="/" class="back-button">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </center>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
