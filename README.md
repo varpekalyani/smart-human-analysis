@@ -39,12 +39,12 @@ This system integrates multiple intelligent modules like car detection, car colo
 ## ⚙️ Installation & Setup
 
 ### 1️⃣ Clone the Repository
--git clone https://github.com/varpekalyani/smart-human-analysis.git
--cd smart-human-analysis
+- git clone https://github.com/varpekalyani/smart-human-analysis.git
+- cd smart-human-analysis
 
 ### 2️⃣ Create Virtual Environment
-python -m venv venv
-venv\Scripts\activate (Windows)
+- python -m venv venv
+- venv\Scripts\activate (Windows)
 
 ### 3️⃣ Install Dependencies
 pip install -r requirements.txt
