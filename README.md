@@ -47,12 +47,12 @@ This system integrates multiple intelligent modules like car detection, car colo
 - venv\Scripts\activate (Windows)
 
 ### 3️⃣ Install Dependencies
-pip install -r requirements.txt
+- pip install -r requirements.txt
 
 ### 4️⃣ Run the Application
-python app.py
+- python app.py
 
-Open browser and go to:
+- Open browser and go to:
 http://127.0.0.1:5000/
 
 ---
