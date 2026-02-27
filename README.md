@@ -32,21 +32,7 @@ This system integrates multiple intelligent modules like car detection, car colo
 - NumPy
 - Pandas
 
----
 
-## 📂 Project Structure
-Smart_Human_Object_Analysis_System/
-│
-├── modules/
-│ ├── sign_language/
-│ ├── voice_analysis/
-│
-├── static/
-├── templates/
-│
-├── app.py
-├── requirements.txt
-├── README.md
 
 ---
 
@@ -104,7 +90,7 @@ http://127.0.0.1:5000/
 
 ## 👩‍💻 Author
 
-Kalyani  
+Kalyani Varpe
 3rd Year Computer Engineering Student  
 AI & Machine Learning Enthusiast
 
