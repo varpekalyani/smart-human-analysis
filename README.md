@@ -90,9 +90,9 @@ http://127.0.0.1:5000/
 
 ## 👩‍💻 Author
 
-Kalyani Varpe
-3rd Year Computer Engineering Student  
-AI & Machine Learning Enthusiast
+- Kalyani Varpe
+- 3rd Year Computer Engineering Student  
+- AI & Machine Learning Enthusiast
 
 ---
 
