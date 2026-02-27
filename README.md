@@ -1,7 +1,6 @@
 # Smart Human Object Analysis System
 
 An AI-powered Computer Vision project that detects and analyzes humans and objects in real-time using Deep Learning models.
-
 This system integrates multiple intelligent modules like car detection, car color detection, sign language recognition, voice analysis, age-gender detection, and more — all inside one unified web interface.
 
 ---
